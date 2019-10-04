@@ -14,10 +14,8 @@
 	- config
 
 #### 2.  Dependências
-- Sequelize
-	- sequelize-cli
+- TypeORM
 - Express
-- BodyParser
 - PG (PostgreSQL)
 - Passport
 
