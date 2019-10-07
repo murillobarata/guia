@@ -107,28 +107,26 @@ await this.userRepository.save(userToUpdate);
 
     }
 ```
-7.  Configurar Module:
 
+7.  Configurar Module:
 ```javascript
 @Module({
-		imports: [TypeOrmModule.forFeature([User])],
-		controllers: [UsersController],
-		providers: [UsersService]
+	imports: [TypeOrmModule.forFeature([User])],
+	controllers: [UsersController],
+	providers: [UsersService]
 })
 ```
 
 8. Adicionar a entidade em app.module.ts > entities: [];
 9. Criar construtor para Service:
-
 ```javascript
 constructor(
 	@InjectRepository(User)
 	private readonly userRepository: Repository<User>,
 ) { }
 ```
-
-	9.1 Criar métodos CRUD:
-	```javascript
+9.1. Criar métodos CRUD:
+```javascript
 	create(user: User) {
 		return this.userRepository.insert(user);
 	}
@@ -159,7 +157,7 @@ constructor(
 
 10. Alterar Controller:
 ```javascript
-@Get()
+	@Get()
     findAll(): Promise<User[]> {
         return this.userService.findAll();
     }
