@@ -8,14 +8,15 @@ import { User } from './user.entity';
 export class UsersController {
 
     constructor(private userService: UsersService) {}
+
     @Get()
-    findAll() {
-        return 'return all users';
+    findAll(): Promise<User[]> {
+        return this.userService.findAll();
     }
 
     @Get(':id')
-    finOne(@Param() params) {
-        return 'return user #${params.id}'; 
+    finOne(@Param() params): Promise<User> {
+        return this.userService.findOne(params.id); 
     }
 
     @Post()
@@ -28,16 +29,16 @@ export class UsersController {
         user.updatedAt = new Date();
 
         this.userService.create(user);
-        return 'create new user named: ' + createUserDto.name;
+        return user;
     }
 
     @Put(':id')
-    edit(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-        return 'edit user #${id}';
+    edit(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
+        return this.userService.update(id, updateUserDto);
     }
 
     @Delete(':id')
-    remove(@Param('id') id: string) {
-        return 'remove user #${id}';
+    remove(@Param('id') id: number) {
+        return this.userService.remove(id);
     }
 }

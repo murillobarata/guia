@@ -1,8 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { PostEntity } from "./../posts/post.entity";
 
 @Entity()
 export class User {
-    @PrimaryGeneratedColumn()
+
+    @PrimaryGeneratedColumn({name: "user_id"})
     id: number;
 
     @Column({ length: 500})
@@ -19,4 +21,8 @@ export class User {
 
     @Column()
     updatedAt: Date;
+
+    @OneToMany(type => PostEntity, post => post.author)
+    posts: PostEntity[];
+
 }

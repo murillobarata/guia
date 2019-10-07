@@ -1,12 +1,14 @@
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-
 import { Connection } from 'typeorm';
 
-import { UsersModule } from './users/users.module';
 import { LoggerMiddleware } from './middleware/LoggerMiddleware';
+
+import { UsersModule } from './users/users.module';
 import { User } from './users/user.entity';
 
+import { PostsModule } from './posts/posts.module';
+import { PostEntity } from './posts/post.entity';
 
 @Module({
   imports: [
@@ -17,11 +19,12 @@ import { User } from './users/user.entity';
       username: "postgres",
       password: "postgres",
       database: "guia",
-      entities: [User],
+      entities: [User, PostEntity],
       synchronize: true
   }),
-    UsersModule
-  ],
+    UsersModule,
+    PostsModule
+  ]
 })
 export class AppModule implements NestModule {
 
@@ -30,6 +33,6 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(LoggerMiddleware)
-      .forRoutes('users');
+      .forRoutes('users', 'posts');
   }
 }
