@@ -9,6 +9,8 @@ import { User } from './users/user.entity';
 
 import { PostsModule } from './posts/posts.module';
 import { PostEntity } from './posts/post.entity';
+import { CategoriesModule } from './categories/categories.module';
+import { Category } from './categories/category.entity';
 
 @Module({
   imports: [
@@ -19,12 +21,19 @@ import { PostEntity } from './posts/post.entity';
       username: "postgres",
       password: "postgres",
       database: "guia",
-      entities: [User, PostEntity],
+      entities: [
+        User, 
+        PostEntity,
+        Category
+      ],
       synchronize: true
   }),
     UsersModule,
-    PostsModule
-  ]
+    PostsModule,
+    CategoriesModule
+  ],
+  controllers: [],
+  providers: []
 })
 export class AppModule implements NestModule {
 

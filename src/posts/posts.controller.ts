@@ -1,14 +1,16 @@
 import { Controller, Get, Post, Param, Body, Put, Delete } from '@nestjs/common';
 import { PostsService } from './posts.service';
-import { CreatePostDto } from './dto/createPostDto';
-import { UpdatePostDto } from './dto/updatePostDto';
+import { CreatePostDto } from './dto/createPost.dto';
+import { UpdatePostDto } from './dto/updatePost.dto';
 import { PostEntity } from './post.entity';
 import { UsersService } from './../users/users.service';
+import { CategoriesService } from './../categories/categories.service';
 
 @Controller('posts')
 export class PostsController {
     constructor(private postService: PostsService,
-        private userService: UsersService) {}
+        private userService: UsersService,
+        private categoryService: CategoriesService) {}
 
     @Get()
     findAll(): Promise<PostEntity[]> {
@@ -27,10 +29,14 @@ export class PostsController {
         post.content = createPostDto.content;
         post.createdAt = new Date();
         post.updatedAt = new Date();
-        console.log(createPostDto.user_id);
+
         var author = await this.userService.findOne(createPostDto.user_id);
-        console.log(author);
         post.author = author;
+
+        createPostDto.categories.forEach(async cat_id => {
+            var category = await this.categoryService.findOne(cat_id);
+            post.categories.push(category);
+        });
 
         this.postService.create(post);
         return post;
