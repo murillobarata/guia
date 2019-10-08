@@ -12,7 +12,7 @@ export class CategoriesService {
     ) {}
 
     create(category: Category) {
-        return this.categoryRepository.insert(category);
+        return this.categoryRepository.save(category);
     }
 
     findAll(): Promise<Category[]> {
@@ -20,6 +20,10 @@ export class CategoriesService {
     }
 
     async findOne(id: number): Promise<Category> {
+        return await this.categoryRepository.findOne(id);
+    } 
+
+    async findOneWithPosts(id: number): Promise<Category> {
         return await this.categoryRepository.findOne(id, {relations: ["posts"]});
     } 
 

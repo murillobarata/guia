@@ -13,7 +13,7 @@ export class PostsService {
     ) {}
 
     create(post: PostEntity) {
-        return this.postRepository.insert(post);
+        return this.postRepository.save(post);
     }
 
     findAll(): Promise<PostEntity[]> {
@@ -21,7 +21,7 @@ export class PostsService {
     }
 
     findOne(id: number): Promise<PostEntity> {
-        return this.postRepository.findOne(id);
+        return this.postRepository.findOne(id, {relations: ["author", "categories"]});
     }
 
     async update(id: number, postDto: UpdatePostDto) {

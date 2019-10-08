@@ -6,6 +6,7 @@ import { PostEntity } from './post.entity';
 import { UsersService } from './../users/users.service';
 import { CategoriesService } from './../categories/categories.service';
 import { Category } from 'src/categories/category.entity';
+import { async } from 'rxjs/internal/scheduler/async';
 
 @Controller('posts')
 export class PostsController {
@@ -33,19 +34,21 @@ export class PostsController {
 
         var author = await this.userService.findOne(createPostDto.user_id);
         post.author = author;
-        
-        /* TO DO */
+
         post.categories = new Array<Category>();
-        console.log(createPostDto.categories);
-        createPostDto.categories.forEach(async cat_id => {
-            var category = await this.categoryService.findOne(cat_id);
-            console.log(category);
-            post.categories.push(category);
-        });
-        console.log(post.categories);
+
+        const promises = createPostDto.categories.map(
+            async (cat_id: number) => {
+                var category = await this.categoryService.findOne(cat_id);
+                post.categories.push(category);
+            }
+        );
+
+        await Promise.all(promises);
+
         this.postService.create(post);
         return post;
-        /* ***** */
+
     }
 
     @Put(':id')

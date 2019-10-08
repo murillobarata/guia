@@ -14,7 +14,7 @@ export class UsersService {
         
         create(user: User) {
             console.log(user);
-            return this.userRepository.insert(user);
+            return this.userRepository.save(user);
         }
         
         findAll(): Promise<User[]> {
@@ -23,6 +23,10 @@ export class UsersService {
    
         findOne(id: number): Promise<User> {
             return  this.userRepository.findOne(id);
+        }
+
+        findOneWithPosts(id: number): Promise<User> {
+            return  this.userRepository.findOne(id, {relations: ["posts"]});
         }
 
         async update(id: number, userDto: UpdateUserDto) {

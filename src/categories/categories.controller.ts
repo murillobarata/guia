@@ -20,6 +20,11 @@ export class CategoriesController {
         return this.categoriesService.findOne(params.id);
     }
 
+    @Get(':id/posts')
+    findOneWithPosts(@Param() params): Promise<Category> {
+        return this.categoriesService.findOneWithPosts(params.id);
+    }
+
     @Post()
     async create(@Body() createCategoryDto: CreateCategoryDto) {
         var cat = new Category();

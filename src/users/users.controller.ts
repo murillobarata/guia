@@ -19,6 +19,11 @@ export class UsersController {
         return this.userService.findOne(params.id); 
     }
 
+    @Get(':id/posts')
+    finOneWithPosts(@Param() params): Promise<User> {
+        return this.userService.findOneWithPosts(params.id); 
+    }
+
     @Post()
     create(@Body() createUserDto: CreateUserDto) {
         var user = new User();
