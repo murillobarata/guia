@@ -5,6 +5,7 @@ import { UpdatePostDto } from './dto/updatePost.dto';
 import { PostEntity } from './post.entity';
 import { UsersService } from './../users/users.service';
 import { CategoriesService } from './../categories/categories.service';
+import { Category } from 'src/categories/category.entity';
 
 @Controller('posts')
 export class PostsController {
@@ -32,14 +33,19 @@ export class PostsController {
 
         var author = await this.userService.findOne(createPostDto.user_id);
         post.author = author;
-
+        
+        /* TO DO */
+        post.categories = new Array<Category>();
+        console.log(createPostDto.categories);
         createPostDto.categories.forEach(async cat_id => {
             var category = await this.categoryService.findOne(cat_id);
+            console.log(category);
             post.categories.push(category);
         });
-
+        console.log(post.categories);
         this.postService.create(post);
         return post;
+        /* ***** */
     }
 
     @Put(':id')

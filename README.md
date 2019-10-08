@@ -192,10 +192,14 @@ constructor(
 ```
 ------------
 #### Relacionamento entre entidades
-##### @JoinColumn() - em relacionamentos OneToOne/ManyToMany
+##### @JoinColumn() - em relacionamentos OneToOne
 - Esse decorator deve ser utilizado somente em um lado do relacionamento.
 - O lado em que ele for utilizado será o dono do relacionamento.
 - O dono do relacionamento conterá uma coluna com uma chave estrangeira no banco de dados.
+
+##### @JoinTable() - em relacionamentos ManyToMany
+- Semelhante ao @JoinColumn(), deve ser utilizado somente em um lado do relacionamento.
+- Será criada uma tabela relacional, entre as duas entidades.
 
 ##### @OneToMany()
 - OneToMany é sempre o lado inverso da relação e não pode existir sem o ManyToOne no outro lado da relação.
