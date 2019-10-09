@@ -4,33 +4,20 @@ import { Connection } from 'typeorm';
 
 import { LoggerMiddleware } from './middleware/LoggerMiddleware';
 
-import { UsersModule } from './users/users.module';
-import { User } from './users/user.entity';
+import { dbconfig } from './config/database';
 
+import { UsersModule } from './users/users.module';
 import { PostsModule } from './posts/posts.module';
-import { PostEntity } from './posts/post.entity';
 import { CategoriesModule } from './categories/categories.module';
-import { Category } from './categories/category.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: "postgres",
-      host: "localhost",
-      port: 5432,
-      username: "postgres",
-      password: "postgres",
-      database: "guia",
-      entities: [
-        User, 
-        PostEntity,
-        Category
-      ],
-      synchronize: true
-  }),
+    TypeOrmModule.forRoot(dbconfig),
     UsersModule,
     PostsModule,
-    CategoriesModule
+    CategoriesModule,
+    AuthModule
   ],
   controllers: [],
   providers: []

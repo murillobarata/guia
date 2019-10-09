@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Param, Body, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, Put, Delete, UseGuards } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/createPost.dto';
 import { UpdatePostDto } from './dto/updatePost.dto';
@@ -6,7 +6,7 @@ import { PostEntity } from './post.entity';
 import { UsersService } from './../users/users.service';
 import { CategoriesService } from './../categories/categories.service';
 import { Category } from 'src/categories/category.entity';
-import { async } from 'rxjs/internal/scheduler/async';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('posts')
 export class PostsController {
@@ -14,6 +14,7 @@ export class PostsController {
         private userService: UsersService,
         private categoryService: CategoriesService) {}
 
+    @UseGuards(AuthGuard('jwt'))
     @Get()
     findAll(): Promise<PostEntity[]> {
         return this.postService.findAll();
