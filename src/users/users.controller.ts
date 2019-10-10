@@ -19,6 +19,11 @@ export class UsersController {
         return this.userService.findOne(params.id); 
     }
 
+    // @Get('email/:email')
+    // finByEmail(@Param() params): Promise<User> {
+    //     return this.userService.findByEmail(params.email); 
+    // }
+
     @Get(':id/posts')
     finOneWithPosts(@Param() params): Promise<User> {
         return this.userService.findOneWithPosts(params.id); 
