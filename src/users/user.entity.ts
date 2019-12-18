@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { PostEntity } from "./../posts/post.entity";
+import { GuideService } from "src/guide-services/guide-service.entity";
 
 @Entity()
 export class User {
@@ -19,6 +20,9 @@ export class User {
     password: string;
 
     @Column()
+    profilePicture: string;
+
+    @Column()
     createdAt: Date;
 
     @Column()
@@ -26,5 +30,8 @@ export class User {
 
     @OneToMany(type => PostEntity, post => post.author)
     posts: PostEntity[];
+
+    @OneToMany(type => GuideService, guideService => guideService.author)
+    services: GuideService[];
 
 }

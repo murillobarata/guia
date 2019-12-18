@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from "typeorm";
 import { PostEntity } from "./../posts/post.entity";
+import { GuideService } from "src/guide-services/guide-service.entity";
 
 @Entity()
 export class Category {
@@ -11,6 +12,9 @@ export class Category {
     name: string;
 
     @Column()
+    icon: string;
+
+    @Column()
     createdAt: Date;
 
     @Column()
@@ -18,4 +22,7 @@ export class Category {
 
     @ManyToMany(type => PostEntity, post => post.categories)
     posts: PostEntity[];
+
+    @ManyToMany(type => GuideService, guideService => guideService.categories)
+    services: GuideService[];
 }

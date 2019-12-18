@@ -10,6 +10,8 @@ import { UsersModule } from './users/users.module';
 import { PostsModule } from './posts/posts.module';
 import { CategoriesModule } from './categories/categories.module';
 import { AuthModule } from './auth/auth.module';
+import { GuideServicesModule } from './guide-services/guide-services.module';
+import { ImagesModule } from './images/images.module';
 
 @Module({
   imports: [
@@ -17,7 +19,9 @@ import { AuthModule } from './auth/auth.module';
     UsersModule,
     PostsModule,
     CategoriesModule,
-    AuthModule
+    AuthModule,
+    GuideServicesModule,
+    ImagesModule
   ],
   controllers: [],
   providers: []
