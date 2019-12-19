@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { PostEntity } from "./../posts/post.entity";
-import { GuideService } from "src/guide-services/guide-service.entity";
+import { GuideService } from "./../guide-services/guide-service.entity";
 
 @Entity()
 export class User {
@@ -32,6 +32,6 @@ export class User {
     posts: PostEntity[];
 
     @OneToMany(type => GuideService, guideService => guideService.author)
-    services: GuideService[];
+    guideServices: GuideService[];
 
 }

@@ -5,7 +5,7 @@ import { UpdatePostDto } from './dto/updatePost.dto';
 import { PostEntity } from './post.entity';
 import { UsersService } from './../users/users.service';
 import { CategoriesService } from './../categories/categories.service';
-import { Category } from 'src/categories/category.entity';
+import { Category } from './../categories/category.entity';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('posts')

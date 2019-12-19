@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable, OneToMany } from "typeorm";
 import { User } from "../users/user.entity";
 import { Category } from "../categories/category.entity";
-import { ImageEntity } from "src/images/image.entity";
+import { ImageEntity } from "./../images/image.entity";
 
 @Entity({name: "service"})
 export class GuideService {
@@ -24,10 +24,10 @@ export class GuideService {
     @Column()
     address: string;
 
-    @ManyToOne(type => User, user => user.services)
+    @ManyToOne(type => User, user => user.guideServices)
     author: User;
 
-    @ManyToMany(type => Category, category => category.services)
+    @ManyToMany(type => Category, category => category.guideServices)
     @JoinTable()
     categories: Category[];
 

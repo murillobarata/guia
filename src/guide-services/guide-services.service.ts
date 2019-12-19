@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { GuideService } from './guide-service.entity';
 import { Repository } from 'typeorm';
-import { GuideServicesController } from './guide-services.controller';
 import { UpdateGuideServiceDto } from './dto/update-guide-service.dto';
 
 @Injectable()

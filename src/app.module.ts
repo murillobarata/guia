@@ -17,10 +17,10 @@ import { ImagesModule } from './images/images.module';
   imports: [
     TypeOrmModule.forRoot(dbconfig),
     UsersModule,
+    GuideServicesModule,
     PostsModule,
     CategoriesModule,
     AuthModule,
-    GuideServicesModule,
     ImagesModule
   ],
   controllers: [],

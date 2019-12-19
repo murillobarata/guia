@@ -117,7 +117,7 @@ await this.userRepository.save(userToUpdate);
 })
 ```
 
-8. Adicionar a entidade em app.module.ts > entities: [];
+8. Adicionar a entidade em database.ts > entities: [];
 9. Criar construtor para Service:
 ```javascript
 constructor(
