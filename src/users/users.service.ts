@@ -33,6 +33,10 @@ export class UsersService {
             return  this.userRepository.findOne(id, {relations: ["posts"]});
         }
 
+        findOneWithGuideServices(id: number): Promise<User> {
+            return  this.userRepository.findOne(id, {relations: ["guideServices"]});
+        }
+
         async update(id: number, userDto: UpdateUserDto) {
             let userToUpdate = await this.userRepository.findOne(id);
             userToUpdate.name = userDto.name;

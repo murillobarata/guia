@@ -29,6 +29,11 @@ export class UsersController {
         return this.userService.findOneWithPosts(params.id); 
     }
 
+    @Get(':id/guide-services')
+    finOneWithGuideServices(@Param() params): Promise<User> {
+        return this.userService.findOneWithGuideServices(params.id); 
+    }
+
     @Post()
     create(@Body() createUserDto: CreateUserDto) {
         var user = new User();

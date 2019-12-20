@@ -14,7 +14,7 @@ export class PostsController {
         private userService: UsersService,
         private categoryService: CategoriesService) {}
 
-    @UseGuards(AuthGuard('jwt'))
+    // @UseGuards(AuthGuard('jwt'))
     @Get()
     findAll(): Promise<PostEntity[]> {
         return this.postService.findAll();

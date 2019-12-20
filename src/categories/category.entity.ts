@@ -11,7 +11,7 @@ export class Category {
     @Column()
     name: string;
 
-    @Column()
+    @Column({nullable: true})
     icon: string;
 
     @Column()

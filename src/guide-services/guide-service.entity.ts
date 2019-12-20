@@ -15,7 +15,7 @@ export class GuideService {
     @Column("text")
     description: string;
 
-    @Column()
+    @Column({nullable: true})
     eventDate: Date;
 
     @Column()

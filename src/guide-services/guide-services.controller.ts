@@ -13,6 +13,7 @@ export class GuideServicesController {
     constructor(private guideServicesService: GuideServicesService, private usersService: UsersService,
         private categoriesService: CategoriesService) {}
 
+    @Get()
     findAll(): Promise<GuideService[]> {
         return this.guideServicesService.findAll();
     }
@@ -28,6 +29,7 @@ export class GuideServicesController {
         newGuideService.title = createGuideServiceDto.title;
         newGuideService.description = createGuideServiceDto.description;
         newGuideService.address = createGuideServiceDto.address;
+        newGuideService.phone = createGuideServiceDto.phone;
         
         newGuideService.author = await this.usersService.findOne(createGuideServiceDto.user_id);
 
