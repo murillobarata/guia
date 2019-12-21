@@ -6,12 +6,12 @@ import { GuideService } from "./../guide-services/guide-service.entity";
 import { ImageEntity } from "./../images/image.entity";
 
 export const dbconfig: TypeOrmModuleOptions = {
-    type: "postgres",
-    host: "localhost",
-    port: 5432,
-    username: "postgres",
-    password: "postgres",
-    database: "guia",
+    type: "mysql",
+    host: "mysql669.umbler.com",
+    port: 41890,
+    username: "mbarata",
+    password: "tdostdompgsc",
+    database: "guiasertao",
     entities: [
         User, 
         PostEntity,
