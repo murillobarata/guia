@@ -1,4 +1,7 @@
 import { Controller, Get, Param, Post, Body, Put, Delete } from '@nestjs/common';
+import { join } from 'path';
+import * as express from 'express';
+
 import { CategoriesService } from './categories.service';
 import { Category } from './category.entity';
 import { CreateCategoryDto } from './dto/createCategory.dto';
@@ -32,10 +35,9 @@ export class CategoriesController {
         cat.name = createCategoryDto.name;
 
         var newIcon = decodeBase64Image(createCategoryDto.icon);
-        console.log(newIcon);
-        (await fs).writeFile('./images/'+cat.name+'.png', newIcon.data, (err) => console.log(err));
+        (await fs).writeFile(join(process.cwd() + '/static/images/category/')+cat.name+'.png', newIcon.data, (err) => console.log(err));
 
-        cat.icon = pathUrl + '/images/'+cat.name+'.png';
+        cat.icon = pathUrl + '/images/category/'+cat.name+'.png';
 
         cat.createdAt = new Date();
         cat.updatedAt = new Date();
