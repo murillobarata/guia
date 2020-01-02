@@ -51,6 +51,7 @@ export class UsersController {
         (await fs).writeFile(join(process.cwd() + '/static/images/profile/')+user.name+'_'+user.updatedAt.getTime()+'.png', newProfilePic.data, (err) => console.log(err));
 
         user.profilePicture = pathUrl + '/images/category/'+user.name+'_'+user.updatedAt.getTime()+'.png';
+        
         this.userService.create(user);
         return user;
     }

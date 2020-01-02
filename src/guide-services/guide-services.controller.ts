@@ -6,6 +6,10 @@ import { UsersService } from './../users/users.service';
 import { CategoriesService } from './../categories/categories.service';
 import { Category } from './../categories/category.entity';
 import { UpdateGuideServiceDto } from './dto/update-guide-service.dto';
+import { ImageEntity } from 'src/images/image.entity';
+import { async } from 'rxjs/internal/scheduler/async';
+import { decodeBase64Image, fs, pathUrl } from 'src/utils/utils';
+import { join } from 'path';
 
 @Controller('guide-services')
 export class GuideServicesController {
@@ -45,9 +49,23 @@ export class GuideServicesController {
             }
         );
 
-        // TODO: IMAGES
-
         await Promise.all(promises);
+        
+        // TODO: IMAGES
+        // newGuideService.images = new Array<ImageEntity>();
+        // const imagesPromise = createGuideServiceDto.images.map(
+        //     async(imageB64: string) => {
+        //         var newImage = decodeBase64Image(imageB64);
+        //         (await fs).writeFile(join(process.cwd() + '/static/images/service/')+newGuideService.updatedAt.getTime()+'.png', newImage.data, (err) => console.log(err));
+
+        //         var img = new ImageEntity();
+        //         img.createdAt = newGuideService.updatedAt;
+        //         img.updatedAt = newGuideService.updatedAt;
+        //         img.url = pathUrl + '/images/category/'+newGuideService.updatedAt.getTime()+'.png';
+
+        //         newGuideService.images.push(img);
+        //     }
+        // )
 
         this.guideServicesService.create(newGuideService);
         return newGuideService;
