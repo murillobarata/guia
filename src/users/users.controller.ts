@@ -47,10 +47,13 @@ export class UsersController {
         user.createdAt = new Date();
         user.updatedAt = new Date();
 
-        var newProfilePic = decodeBase64Image(createUserDto.profilePicture);
-        (await fs).writeFile(join(process.cwd() + '/static/images/profile/')+user.name+'_'+user.updatedAt.getTime()+'.png', newProfilePic.data, (err) => console.log(err));
+        var imgName = user.name.replace(/[^A-Z0-9]+/ig, "_");
+        imgName = imgName +'_'+user.updatedAt.getTime();
 
-        user.profilePicture = pathUrl + '/images/category/'+user.name+'_'+user.updatedAt.getTime()+'.png';
+        var newProfilePic = decodeBase64Image(createUserDto.profilePicture);
+        (await fs).writeFile(join(process.cwd() + '/static/images/profile/')+imgName+'.png', newProfilePic.data, (err) => console.log(err));
+
+        user.profilePicture = pathUrl + '/images/profile/'+imgName+'.png';
         
         this.userService.create(user);
         return user;

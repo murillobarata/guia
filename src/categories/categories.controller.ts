@@ -34,10 +34,12 @@ export class CategoriesController {
         var cat = new Category();
         cat.name = createCategoryDto.name;
 
-        var newIcon = decodeBase64Image(createCategoryDto.icon);
-        (await fs).writeFile(join(process.cwd() + '/static/images/category/')+cat.name+'.png', newIcon.data, (err) => console.log(err));
+        const imgName = cat.name.replace(/[^A-Z0-9]+/ig, "_");
 
-        cat.icon = pathUrl + '/images/category/'+cat.name+'.png';
+        var newIcon = decodeBase64Image(createCategoryDto.icon);
+        (await fs).writeFile(join(process.cwd() + '/static/images/category/')+imgName+'.png', newIcon.data, (err) => console.log(err));
+
+        cat.icon = pathUrl + '/images/category/'+imgName+'.png';
 
         cat.createdAt = new Date();
         cat.updatedAt = new Date();

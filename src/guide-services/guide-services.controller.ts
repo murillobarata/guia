@@ -6,16 +6,17 @@ import { UsersService } from './../users/users.service';
 import { CategoriesService } from './../categories/categories.service';
 import { Category } from './../categories/category.entity';
 import { UpdateGuideServiceDto } from './dto/update-guide-service.dto';
-import { ImageEntity } from 'src/images/image.entity';
+import { ImageEntity } from './../images/image.entity';
 import { async } from 'rxjs/internal/scheduler/async';
-import { decodeBase64Image, fs, pathUrl } from 'src/utils/utils';
+import { decodeBase64Image, fs, pathUrl } from './../utils/utils';
 import { join } from 'path';
+import { ImagesService } from './../images/images.service';
 
 @Controller('guide-services')
 export class GuideServicesController {
 
     constructor(private guideServicesService: GuideServicesService, private usersService: UsersService,
-        private categoriesService: CategoriesService) {}
+        private categoriesService: CategoriesService, private imagesService: ImagesService) {}
 
     @Get()
     findAll(): Promise<GuideService[]> {
@@ -42,33 +43,52 @@ export class GuideServicesController {
 
         newGuideService.categories = new Array<Category>();
 
-        const promises = createGuideServiceDto.categories_id.map(
+        const categoriesPromises = createGuideServiceDto.categories_id.map(
             async (cat_id: number) => {
                 var category = await this.categoriesService.findOne(cat_id);
-                newGuideService.categories.push(category);
+                if (category != null) {
+                    newGuideService.categories.push(category);
+                }
             }
         );
 
-        await Promise.all(promises);
+        await Promise.all(categoriesPromises);
+
+        if (newGuideService.categories.length > 0) {
+            return this.guideServicesService.create(newGuideService).then(async (savedGuideService: GuideService) => {
+                
+                savedGuideService.images = new Array<ImageEntity>();
+                const imagesPromise = createGuideServiceDto.images.map(
+                    async(imageB64: string) => {
+                        var newImage = decodeBase64Image(imageB64);
+                        var auxDt = new Date();
+                        var imgName = savedGuideService.title.replace(/[^A-Z0-9]+/ig, "_") + auxDt.getTime() + Math.floor(Math.random() * 100001);
+
+                        (await fs).writeFile(join(process.cwd() + '/static/images/service/')+imgName+'.png', newImage.data, (err) => console.log(err));
         
-        // TODO: IMAGES
-        // newGuideService.images = new Array<ImageEntity>();
-        // const imagesPromise = createGuideServiceDto.images.map(
-        //     async(imageB64: string) => {
-        //         var newImage = decodeBase64Image(imageB64);
-        //         (await fs).writeFile(join(process.cwd() + '/static/images/service/')+newGuideService.updatedAt.getTime()+'.png', newImage.data, (err) => console.log(err));
+                        var img = new ImageEntity();
+                        img.createdAt = savedGuideService.updatedAt;
+                        img.updatedAt = savedGuideService.updatedAt;
+                        img.url = pathUrl + '/images/service/'+imgName+'.png';
+                        
+                        await this.imagesService.create(img);
 
-        //         var img = new ImageEntity();
-        //         img.createdAt = newGuideService.updatedAt;
-        //         img.updatedAt = newGuideService.updatedAt;
-        //         img.url = pathUrl + '/images/category/'+newGuideService.updatedAt.getTime()+'.png';
+                        savedGuideService.images.push(img);
+                    }
+                );
+                
+                await Promise.all(imagesPromise);
 
-        //         newGuideService.images.push(img);
-        //     }
-        // )
+                await this.guideServicesService.create(savedGuideService);
 
-        this.guideServicesService.create(newGuideService);
-        return newGuideService;
+                return savedGuideService;
+            });
+        } else {
+            return { 
+                'statusCode': 500,
+                'message': 'Categoria inválida.'
+            };
+        }
     }
 
     @Put(':id')
