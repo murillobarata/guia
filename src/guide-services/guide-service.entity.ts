@@ -31,7 +31,7 @@ export class GuideService {
     @JoinTable()
     categories: Category[];
 
-    @OneToMany(type => ImageEntity, image => image.guideService)
+    @OneToMany(type => ImageEntity, image => image.guideService, {eager: true})
     images: ImageEntity[];
 
     @Column()

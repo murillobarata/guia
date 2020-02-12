@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Put, Delete, Body, Post } from '@nestjs/common';
+import { Controller, Get, Param, Put, Delete, Body, Post, UseGuards } from '@nestjs/common';
 import { GuideServicesService } from './guide-services.service';
 import { GuideService } from './../guide-services/guide-service.entity';
 import { CreateGuideServiceDto } from './dto/create-guide-service.dto';
@@ -11,6 +11,7 @@ import { async } from 'rxjs/internal/scheduler/async';
 import { decodeBase64Image, fs, pathUrl } from './../utils/utils';
 import { join } from 'path';
 import { ImagesService } from './../images/images.service';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('guide-services')
 export class GuideServicesController {
@@ -28,6 +29,7 @@ export class GuideServicesController {
         return this.guideServicesService.findOne(params.id);
     }
 
+    @UseGuards(AuthGuard('jwt'))
     @Post()
     async create(@Body() createGuideServiceDto: CreateGuideServiceDto) {
         var newGuideService = new GuideService();
@@ -91,6 +93,7 @@ export class GuideServicesController {
         }
     }
 
+    @UseGuards(AuthGuard('jwt'))
     @Put(':id')
     async edit(@Param('id') id: number, @Body() updateGuideServiceDto: UpdateGuideServiceDto) {
         var guideServiceToUpdate = await this.guideServicesService.findOne(id);
@@ -112,9 +115,10 @@ export class GuideServicesController {
 
         await Promise.all(promises);
 
-        return this.guideServicesService.update(id, updateGuideServiceDto);
+        return this.guideServicesService.create(guideServiceToUpdate);
     }
 
+    @UseGuards(AuthGuard('jwt'))
     @Delete(':id')
     remove(@Param('id') id: number) {
         return this.guideServicesService.remove(id);

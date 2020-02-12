@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, UseGuards } from '@nestjs/common';
 import { join } from 'path';
 import * as express from 'express';
 
@@ -7,6 +7,7 @@ import { UpdateUserDto } from './dto/updateUser.dto';
 import { UsersService } from './users.service';
 import { User } from './user.entity';
 import { decodeBase64Image, fs, pathUrl } from './../utils/utils';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('users')
 export class UsersController {
@@ -47,23 +48,27 @@ export class UsersController {
         user.createdAt = new Date();
         user.updatedAt = new Date();
 
-        var imgName = user.name.replace(/[^A-Z0-9]+/ig, "_");
-        imgName = imgName +'_'+user.updatedAt.getTime();
-
-        var newProfilePic = decodeBase64Image(createUserDto.profilePicture);
-        (await fs).writeFile(join(process.cwd() + '/static/images/profile/')+imgName+'.png', newProfilePic.data, (err) => console.log(err));
-
-        user.profilePicture = pathUrl + '/images/profile/'+imgName+'.png';
+        if (createUserDto.profilePicture) {
+            var imgName = user.name.replace(/[^A-Z0-9]+/ig, "_");
+            imgName = imgName +'_'+user.updatedAt.getTime();
+    
+            var newProfilePic = decodeBase64Image(createUserDto.profilePicture);
+            (await fs).writeFile(join(process.cwd() + '/static/images/profile/')+imgName+'.png', newProfilePic.data, (err) => console.log(err));
+    
+            user.profilePicture = pathUrl + '/images/profile/'+imgName+'.png';
+        }
         
         this.userService.create(user);
         return user;
     }
 
+    @UseGuards(AuthGuard('jwt'))
     @Put(':id')
     edit(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
         return this.userService.update(id, updateUserDto);
     }
 
+    @UseGuards(AuthGuard('jwt'))
     @Delete(':id')
     remove(@Param('id') id: number) {
         return this.userService.remove(id);

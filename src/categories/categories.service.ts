@@ -25,7 +25,11 @@ export class CategoriesService {
 
     async findOneWithPosts(id: number): Promise<Category> {
         return await this.categoryRepository.findOne(id, {relations: ["posts"]});
-    } 
+    }
+
+    async findOneWithServices(id: number): Promise<Category> {
+        return await this.categoryRepository.findOne(id, { relations: ["guideServices"]});
+    }
 
     async update(id: number, categoryDto: UpdateCategoryDto) {
         let categoryToUpdate = await this.categoryRepository.findOne(id);

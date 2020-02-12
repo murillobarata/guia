@@ -14,7 +14,6 @@ export class PostsController {
         private userService: UsersService,
         private categoryService: CategoriesService) {}
 
-    // @UseGuards(AuthGuard('jwt'))
     @Get()
     findAll(): Promise<PostEntity[]> {
         return this.postService.findAll();
@@ -25,6 +24,7 @@ export class PostsController {
         return this.postService.findOne(params.id);
     }
 
+    @UseGuards(AuthGuard('jwt'))
     @Post()
     async create(@Body() createPostDto: CreatePostDto) {
         var post = new PostEntity();
@@ -52,11 +52,13 @@ export class PostsController {
 
     }
 
+    @UseGuards(AuthGuard('jwt'))
     @Put(':id')
     edit(@Param('id') id: number, @Body() updatePostDto: UpdatePostDto) {
         return this.postService.update(id, updatePostDto);
     }
 
+    @UseGuards(AuthGuard('jwt'))
     @Delete(':id')
     remove(@Param('id') id: number) {
         return this.postService.remove(id);

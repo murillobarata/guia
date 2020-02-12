@@ -12,43 +12,43 @@ export class UsersService {
             private readonly userRepository: Repository<User>,
         ) {}
         
-        create(user: User) {
-            console.log(user);
-            return this.userRepository.save(user);
-        }
-        
-        findAll(): Promise<User[]> {
-            return this.userRepository.find();
-        }
-   
-        async findOne(id: number): Promise<User> {
-            return await this.userRepository.findOne(id);
-        }
+    create(user: User) {
+        console.log(user);
+        return this.userRepository.save(user);
+    }
+    
+    findAll(): Promise<User[]> {
+        return this.userRepository.find();
+    }
 
-        findByEmail(email: string): Promise<User> {
-            return this.userRepository.findOne({email: email});
-        }
+    async findOne(id: number): Promise<User> {
+        return await this.userRepository.findOne(id);
+    }
 
-        findOneWithPosts(id: number): Promise<User> {
-            return  this.userRepository.findOne(id, {relations: ["posts"]});
-        }
+    findByEmail(email: string): Promise<User> {
+        return this.userRepository.findOne({email: email});
+    }
 
-        findOneWithGuideServices(id: number): Promise<User> {
-            return  this.userRepository.findOne(id, {relations: ["guideServices"]});
-        }
+    findOneWithPosts(id: number): Promise<User> {
+        return  this.userRepository.findOne(id, {relations: ["posts"]});
+    }
 
-        async update(id: number, userDto: UpdateUserDto) {
-            let userToUpdate = await this.userRepository.findOne(id);
-            userToUpdate.name = userDto.name;
-            userToUpdate.password = userDto.password;
-            userToUpdate.updatedAt = new Date();
+    findOneWithGuideServices(id: number): Promise<User> {
+        return  this.userRepository.findOne(id, {relations: ["guideServices"]});
+    }
 
-            await this.userRepository.save(userToUpdate);
-            return userToUpdate;
-        }
+    async update(id: number, userDto: UpdateUserDto) {
+        let userToUpdate = await this.userRepository.findOne(id);
+        userToUpdate.name = userDto.name;
+        userToUpdate.password = userDto.password;
+        userToUpdate.updatedAt = new Date();
 
-        async remove(id: number) {
-            let userToRemove = await this.userRepository.findOne(id);
-            return await this.userRepository.remove(userToRemove);
-        }
+        await this.userRepository.save(userToUpdate);
+        return userToUpdate;
+    }
+
+    async remove(id: number) {
+        let userToRemove = await this.userRepository.findOne(id);
+        return await this.userRepository.remove(userToRemove);
+    }
 }

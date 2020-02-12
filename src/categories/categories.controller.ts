@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Body, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Put, Delete, UseGuards } from '@nestjs/common';
 import { join } from 'path';
 import * as express from 'express';
 
@@ -7,6 +7,7 @@ import { Category } from './category.entity';
 import { CreateCategoryDto } from './dto/createCategory.dto';
 import { UpdateCategoryDto } from './dto/updateCategory.dto';
 import { decodeBase64Image, fs, pathUrl } from './../utils/utils';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('categories')
 export class CategoriesController {
@@ -29,6 +30,12 @@ export class CategoriesController {
         return this.categoriesService.findOneWithPosts(params.id);
     }
 
+    @Get(':id/services')
+    findOneWithServices(@Param() params): Promise<Category> {
+        return this.categoriesService.findOneWithServices(params.id);
+    }
+
+    @UseGuards(AuthGuard('jwt'))
     @Post()
     async create(@Body() createCategoryDto: CreateCategoryDto) {
         var cat = new Category();
@@ -48,11 +55,13 @@ export class CategoriesController {
         return cat;
     }
 
+    @UseGuards(AuthGuard('jwt'))
     @Put(':id')
     edit(@Param('id') id: number, @Body() updateCategoryDto: UpdateCategoryDto) {
         return this.categoriesService.update(id, updateCategoryDto);
     }
 
+    @UseGuards(AuthGuard('jwt'))
     @Delete(':id')
     remove(@Param('id') id: number) {
         return this.categoriesService.remove(id);
