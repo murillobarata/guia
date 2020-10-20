@@ -1,5 +1,9 @@
 # Guia - Projeto base Node.JS
 
+#### Sobre
+O Guia é um projeto em Node, utilizando NestJS e TypeORM, já configurado para ser conectado a um banco PostgreSQL.
+Esse projeto tem o objetivo de auxiliar pessoas interessadas em aprender a desenvolver APIs de maneira simples e prática.
+
 #### 1. Estrutura do código
 	src
 		- app
